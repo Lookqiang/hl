@@ -6,6 +6,10 @@
         <el-input  class="el-input-bottom"  v-model="phone" placeholder="手机号码"></el-input>
         <el-input  class="el-input-bottom"  v-model="password" placeholder="密码"></el-input>
         <div class="message-error-default" :class="messageErrorActive">{{messageError}}</div>
+        <div class="other-handle flex">
+            <a href="./resetpassword">忘记密码</a>
+            <a href="./signin">注册</a>
+        </div>
         <el-button type="button" class="button-position" text="登录" @click.native="login"></el-button>
     </div>
 </template>
@@ -13,7 +17,7 @@
 <script>
 import { Component, Vue } from 'vue-property-decorator';
 import elInput from '@/components/input/el-input.vue';
-import elButton from '@/components/input/el-button.vue';
+import elButton from '@/components/button/el-button.vue';
 
 export default {
     name:'Login',
@@ -61,7 +65,7 @@ export default {
     margin-top:44px;
 }
  .button-position{
-    margin-top: 77px;
+    margin-top: 48px;
 }
 .message-error-default{
     padding: 8px 64px 0;
@@ -73,5 +77,17 @@ export default {
     text-align: left;
     padding: 7px 64px 0;
     font-size: 14px;
+}
+.flex{
+    display: flex;
+    justify-content: space-around;
+}
+.other-handle{
+    margin-top: 10px;
+    font-size: 14px;
+}
+.other-handle a{
+    text-decoration: none;
+    color:#2090da; 
 }
 </style>
