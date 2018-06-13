@@ -93,10 +93,10 @@
     outline: none;  
 }
 input::-webkit-input-placeholder{
-            color:#cbcbcb;
+    color:#cbcbcb;
 }
 input::-moz-placeholder{   /* Mozilla Firefox 19+ */
-            color:#cbcbcb;
+    color:#cbcbcb;
 }
 input::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
     color:#cbcbcb;
