@@ -1,7 +1,7 @@
 <template>
     <div class="el-select">
         <label v-if="label">{{label}}</label>
-        <input class="el-input" @focus="focusInput($event)"  @blur="blurInput()"  :class="classStyle" :type="type"  :value="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
+        <input class="el-input" @click="focusInput($event)"  @blur="blurInput()"  :class="classStyle" :type="type"  :value="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
         <span class="triangle"></span>
         <div class="el-select-dropdown" :style="{top:dropdownTop}" v-if="showDropdown">
                 'triangle'
