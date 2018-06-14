@@ -42,7 +42,8 @@
         methods:{
             inputValue($event){
                this.$emit('input', $event.target.value)
-            }
+            },
+           
         }
     }
 </script>

@@ -1,21 +1,22 @@
 <template>
     <div class="el-select" :class="{elSelectFocus:focusStatus}">
         <label v-if="label">{{label}}</label>
-<<<<<<< HEAD
-        <input class="el-input" @click="focusInput($event)"  @blur="blurInput()"  :class="classStyle" :type="type"  :value="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
-=======
-        <input class="el-input" @click="focusInput($event)"  @blur="blurInput()"  :dataId="dataId" :class="classStyle" :type="type"  :value="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
->>>>>>> e0cb6993ffc7d164e141b333956a287fa286b8a0
+         
+        <input class="el-input" @click="focusInput($event)"    @blur="blurInput()"  :dataId="dataId" :class="classStyle" :type="type"  v-model="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
         <span class="triangle"></span>
         <div class="el-select-dropdown" :style="{top:dropdownTop}" v-if="showDropdown">
                <ul class="el-select-option">
-                   <li  v-if='optionList!=null' v-for="(option,index) in optionList" :value="option.id" v-text="option.name" :key="index" @click="chooseResult(option)"></li>
+                  <!-- <li v-for="(option,index) in optionList" :key="index"   @click="chooseResult(option)"> {{option.name}}</li> -->
+                  <slot></slot>
                </ul>
         </div>
     </div>
 </template>
 
 <script>
+    import elOption from '@/components/input/el-option.vue'
+    import store from '../../store';
+
     export default {
         name:'el-select',
         props:{
@@ -54,14 +55,21 @@
                 dropdownTop:0,
                 focusStatus:false,
                 dataId:'',
-                value:''
+                
             }
+        },
+        creatd(){
+           
+        },
+        mount(){
+            
         },
         methods:{
             inputValue($event){
                this.$emit('input', $event.target.value)
             },
             focusInput($event){
+                console.log(this)
                 this.showDropdown=!this.showDropdown;
                 this.dropdownTop =$event.target.offsetTop+$event.target.offsetHeight+10;
                 this.focusStatus=true
@@ -73,8 +81,20 @@
             chooseResult(currentOption){
                 this.value=currentOption.name
                 this.$emit('input',currentOption.id)
+            },
+             getOptionValue(value){
+                console.log(value)
             }
-        }
+        },
+        components: {
+            elOption
+        },
+        computed:{
+            value(){
+               return store.state.slecetValue    
+            },
+        },
+       
     }
 </script>
 
@@ -132,6 +152,8 @@ input::-ms-input-placeholder{  /* Internet Explorer 10-11 */
     box-sizing: border-box;
     margin: 5px 0;
     width: 100%;
+    max-height: 250px;
+    overflow-y: scroll;
 }
 
 .el-select-option {

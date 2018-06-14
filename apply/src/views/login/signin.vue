@@ -1,8 +1,19 @@
 <template>
     <div>
-        <el-input label='学生姓名' class='el-input-apply'   v-model="usrName" ></el-input> 
-        <el-select label='学校' class='el-input-apply'></el-select>
-        <el-select label='学校' class='el-input-apply' :optionList="optionList" v-model="school"></el-select>
+        <el-input label='账号' class='el-input-apply'   v-model.trim="formData.account" ></el-input>
+        <el-input label='密码' class='el-input-apply'   v-model="formData.password" ></el-input> 
+        <el-input label='身高' class='el-input-apply'  type='number'  v-model.trim="formData.height" ></el-input> 
+        <el-input label='家庭住址' class='el-input-apply'  type='number'  v-model.trim="formData.family_address" >
+        </el-input>
+        <el-select label='地区' class='el-input-apply' :optionList="cityList" v-model="city_id">
+             <el-option v-for="(option,index) in cityList" :key="index" :label='option.name' :value="option.id"> </el-option>
+        </el-select>
+
+        <el-select label='学校' class='el-input-apply' :optionList="school_list" v-model="formData.school_id" >
+        </el-select>
+         <el-input label='生日' class='el-input-apply'   v-model.trim="formData.birthday" ></el-input>
+         <el-input label='生日' class='el-input-apply'  type='number'  v-model.trim="formData.age" ></el-input>
+         
     </div>
 </template>
 
@@ -10,24 +21,85 @@
 import elInput from '@/components/input/el-input.vue';
 import elButton from '@/components/button/el-button.vue';
 import elSelect from '@/components/input/el-select.vue';
+import elOption from '@/components/input/el-option.vue'
+import axios from 'axios';
     export default {
        name:'signin' ,
+    
         components: {
             elInput,
             elButton,
-            elSelect
+            elSelect,
+            elOption
         },
         data(){
             return {
                 usrName:'朱晓明',
-                school:'',
-                optionList:[{
-                    id:'1',
-                    name:'qq'
-                },{
-                    id:'2',
-                    name:'trngxun'
-                }]
+                formData:{
+                    account:'',
+                    password:'',
+                    height:'',
+                    family_address:'',
+                    school_id:'',
+                    birthday:'',
+                    age:''
+                },
+                city_id:'',
+                cityList:null,
+                school_list:null
+            }
+        },
+        created(){
+            let that=this;
+            axios.post('applyapi/index/getCityData', {
+              
+            })
+            .then(function (response) {
+                console.log(response.data.data);
+                let cityData;
+                cityData = response.data.data.map(item => {
+                    return {
+                        id:item.city_id,
+                        name:item.city_name,
+                    }
+                })
+                that.cityList=cityData
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            
+            
+        },
+        methods:{
+            aa(val){
+                this.formData.school_id=val
+            }
+        },
+        watch:{
+            city_id(){
+                let that=this
+                if(that.city_id!=''){
+                    axios.post('applyapi/index/getSchoolData', {
+                    city_id:that.city_id,
+                    page_num:'1',
+                    page_size:'1000'
+                    })
+                    .then(function (response) {
+                        console.log(response);
+                        let cityData;
+                        cityData = response.data.data.map(item => {
+                            return {
+                                id:item.school_id,
+                                name:item.school_name,
+                            }
+                        })
+                        that.school_list=cityData
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });   
+                }
             }
         }
     }

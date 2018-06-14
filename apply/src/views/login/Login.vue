@@ -44,9 +44,6 @@ export default {
 </script>
 
 <style scoped>
-.login-body{
-  
-}
 .bg{
      position: absolute;
     width: 100%;
