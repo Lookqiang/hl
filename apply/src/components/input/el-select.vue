@@ -1,10 +1,16 @@
 <template>
-    <div class="el-select">
+    <div class="el-select" :class="{elSelectFocus:focusStatus}">
         <label v-if="label">{{label}}</label>
+<<<<<<< HEAD
         <input class="el-input" @click="focusInput($event)"  @blur="blurInput()"  :class="classStyle" :type="type"  :value="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
+=======
+        <input class="el-input" @click="focusInput($event)"  @blur="blurInput()"  :dataId="dataId" :class="classStyle" :type="type"  :value="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
+>>>>>>> e0cb6993ffc7d164e141b333956a287fa286b8a0
         <span class="triangle"></span>
         <div class="el-select-dropdown" :style="{top:dropdownTop}" v-if="showDropdown">
-                'triangle'
+               <ul class="el-select-option">
+                   <li  v-if='optionList!=null' v-for="(option,index) in optionList" :value="option.id" v-text="option.name" :key="index" @click="chooseResult(option)"></li>
+               </ul>
         </div>
     </div>
 </template>
@@ -15,13 +21,9 @@
         props:{
             type:{
                 type:String,
-                default:'text',
+                default:null,
             },
             placeholder:{
-                type:String,
-                default:'',
-            },
-            value:{
                 type:String,
                 default:'',
             },
@@ -41,11 +43,18 @@
                 type:String,
                 default:''
             },
+            optionList:{
+                type:Array,
+                default:null
+            }
         },
         data(){
             return {
                 showDropdown:false,
-                dropdownTop:0
+                dropdownTop:0,
+                focusStatus:false,
+                dataId:'',
+                value:''
             }
         },
         methods:{
@@ -55,10 +64,16 @@
             focusInput($event){
                 this.showDropdown=!this.showDropdown;
                 this.dropdownTop =$event.target.offsetTop+$event.target.offsetHeight+10;
+                this.focusStatus=true
             },
             blurInput(){
                 this.showDropdown=false;
+                this.focusStatus=false
             },
+            chooseResult(currentOption){
+                this.value=currentOption.name
+                this.$emit('input',currentOption.id)
+            }
         }
     }
 </script>
@@ -82,10 +97,10 @@
     outline: none;  
 }
 input::-webkit-input-placeholder{
-            color:#cbcbcb;
+    color:#cbcbcb;
 }
 input::-moz-placeholder{   /* Mozilla Firefox 19+ */
-            color:#cbcbcb;
+    color:#cbcbcb;
 }
 input::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
     color:#cbcbcb;
@@ -110,7 +125,28 @@ input::-ms-input-placeholder{  /* Internet Explorer 10-11 */
     position: absolute;
     top: 40px;
     z-index:2009; 
+    border: 1px solid #e4e7ed;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    box-sizing: border-box;
+    margin: 5px 0;
+    width: 100%;
 }
 
-
+.el-select-option {
+    list-style: none;
+    padding:0;
+    text-align: left;
+    margin: 0;
+}
+.el-select-option  li{
+     padding: 12px;
+}
+.el-select-option  li:hover,.el-select-option  li:focus{
+    background-color: #f5f7fa;
+}
+.elSelectFocus{
+    outline: 1px solid #409eff;      
+}
 </style>

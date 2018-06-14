@@ -2,7 +2,7 @@
     <div>
         <el-input label='学生姓名' class='el-input-apply'   v-model="usrName" ></el-input> 
         <el-select label='学校' class='el-input-apply'></el-select>
-        <el-select label='学校' class='el-input-apply'></el-select>
+        <el-select label='学校' class='el-input-apply' :optionList="optionList" v-model="school"></el-select>
     </div>
 </template>
 
@@ -19,7 +19,15 @@ import elSelect from '@/components/input/el-select.vue';
         },
         data(){
             return {
-                usrName:'朱晓明'
+                usrName:'朱晓明',
+                school:'',
+                optionList:[{
+                    id:'1',
+                    name:'qq'
+                },{
+                    id:'2',
+                    name:'trngxun'
+                }]
             }
         }
     }
