@@ -3,13 +3,17 @@
         <label v-if="label">{{label}}</label>
          
         <input class="el-input" @click="focusInput($event)"    @blur="blurInput()"  :dataId="dataId" :class="classStyle" :type="type"  v-model="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
-        <span class="triangle"></span>
-        <div class="el-select-dropdown" :style="{top:dropdownTop}" v-if="showDropdown">
-               <ul class="el-select-option">
-                  <!-- <li v-for="(option,index) in optionList" :key="index"   @click="chooseResult(option)"> {{option.name}}</li> -->
-                  <slot></slot>
-               </ul>
-        </div>
+        <span class="triangle">
+            <i></i>
+        </span>
+        <transition name="fade">
+            <div class="el-select-dropdown" :style="{top:dropdownTop}" v-if="showDropdown">
+                <ul class="el-select-option">
+                    <slot></slot>
+                    <!-- <li v-for="(option,index) in optionList" :key="index"   @click="chooseResult(option)"> {{option.name}}</li> -->
+                </ul>
+            </div>
+        </transition >
     </div>
 </template>
 
@@ -55,7 +59,7 @@
                 dropdownTop:0,
                 focusStatus:false,
                 dataId:'',
-                
+                value:''
             }
         },
         creatd(){
@@ -90,9 +94,7 @@
             elOption
         },
         computed:{
-            value(){
-               return store.state.slecetValue    
-            },
+        
         },
        
     }
@@ -129,17 +131,12 @@ input::-ms-input-placeholder{  /* Internet Explorer 10-11 */
     color:#cbcbcb;
 }
 .triangle{
-    background: #000;
-    border: 4px solid #000000;
-    height: 0px;
-    border-top-color: inherit;
-    border-right-color: inherit;
-    border-left-color: inherit;
-    border-bottom-color: #000;
-    position: relative;
-    top: 50%;
-    margin-top: -6px;
-    right: 20px;
+    width: 30px;
+    height: 40px;
+    line-height: 40px;
+}
+.triangle i:after{
+    content: '\25B2'
 }
 .el-select-dropdown{
     position: absolute;

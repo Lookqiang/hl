@@ -6,7 +6,7 @@
         <el-input label='家庭住址' class='el-input-apply'  type='number'  v-model.trim="formData.family_address" >
         </el-input>
         <el-select label='地区' class='el-input-apply' :optionList="cityList" v-model="city_id">
-             <el-option v-for="(option,index) in cityList" :key="index" :label='option.name' :value="option.id"> </el-option>
+            <el-option v-for='(city,index) in cityList' :key="index" :value='city.id' :label='city.name' @chooseSlecetValue='city_id=val'></el-option>
         </el-select>
 
         <el-select label='学校' class='el-input-apply' :optionList="school_list" v-model="formData.school_id" >
@@ -72,9 +72,7 @@ import axios from 'axios';
             
         },
         methods:{
-            aa(val){
-                this.formData.school_id=val
-            }
+            
         },
         watch:{
             city_id(){

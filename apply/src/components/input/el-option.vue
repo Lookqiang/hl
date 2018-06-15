@@ -12,7 +12,7 @@
         props:['value','label'],
         methods:{
             chooseOption(value){
-                store.commit('chooseSlecetValue', value)                      
+                this.$emit('chooseSlecetValue', value)                      
             }
         }
     }
