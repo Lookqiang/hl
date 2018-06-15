@@ -1,8 +1,8 @@
 <template>
     <div class="el-select" :class="{elSelectFocus:focusStatus}">
-        <label v-if="label">{{label}}</label>
+        <label v-if="label">{{label}} </label>
          
-        <input class="el-input" @click="focusInput($event)"    @blur="blurInput()"  :dataId="dataId" :class="classStyle" :type="type"  v-model="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
+        <input class="el-input" @click="focusInput($event)"    @blur="blurInput()"  :dataId="dataId" :class="classStyle" :type="type"  v-model="selectValue" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
         <span class="triangle">
             <i></i>
         </span>
@@ -18,8 +18,8 @@
 </template>
 
 <script>
-    import elOption from '@/components/input/el-option.vue'
-    import store from '../../store';
+import elOption from "@/components/input/el-option.vue";
+import store from "../../store";
 
     export default {
         name:'el-select',
@@ -59,7 +59,7 @@
                 dropdownTop:0,
                 focusStatus:false,
                 dataId:'',
-                value:''
+                selectValue:''
             }
         },
         creatd(){
@@ -96,39 +96,42 @@
         computed:{
         
         },
-       
-    }
+    
+};
 </script>
 
 <style scoped>
-.el-select{
-    margin-top: 8px;
-    font-size: 14px;
-    position: relative;
+.el-select {
+  margin-top: 8px;
+  font-size: 14px;
+  position: relative;
 }
-.el-input{
-    border: 0;
-    background: rgba(203, 203, 203, 0);
-    font-size: 14px;
+.el-input {
+  border: 0;
+  background: rgba(203, 203, 203, 0);
+  font-size: 14px;
 }
-.el-input:after{
-    content: "\E605";
+.el-input:after {
+  content: "\E605";
 }
 
-.el-input:focus{
-    outline: none;  
+.el-input:focus {
+  outline: none;
 }
-input::-webkit-input-placeholder{
-    color:#cbcbcb;
+input::-webkit-input-placeholder {
+  color: #cbcbcb;
 }
-input::-moz-placeholder{   /* Mozilla Firefox 19+ */
-    color:#cbcbcb;
+input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #cbcbcb;
 }
-input::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
-    color:#cbcbcb;
+input::-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #cbcbcb;
 }
-input::-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
-    color:#cbcbcb;
+input::-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #cbcbcb;
 }
 .triangle{
     width: 30px;
@@ -138,34 +141,36 @@ input::-ms-input-placeholder{  /* Internet Explorer 10-11 */
 .triangle i:after{
     content: '\25B2'
 }
-.el-select-dropdown{
-    position: absolute;
-    top: 40px;
-    z-index:2009; 
-    border: 1px solid #e4e7ed;
-    border-radius: 4px;
-    background-color: #fff;
-    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
-    box-sizing: border-box;
-    margin: 5px 0;
-    width: 100%;
-    max-height: 250px;
-    overflow-y: scroll;
+.el-select-dropdown {
+  position: absolute;
+  top: 40px;
+  z-index: 2009;
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin: 5px 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: scroll;
 }
 
 .el-select-option {
-    list-style: none;
-    padding:0;
-    text-align: left;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin: 0;
 }
-.el-select-option  li{
-     padding: 12px;
+.elSelectFocus {
+  outline: 1px solid #409eff;
 }
-.el-select-option  li:hover,.el-select-option  li:focus{
-    background-color: #f5f7fa;
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
 }
-.elSelectFocus{
-    outline: 1px solid #409eff;      
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

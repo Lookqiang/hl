@@ -4,20 +4,24 @@
 </template>
 
 <script>
- import store from '../../store'; 
-
-    export default {
-        name:"elOption",
-        store,
-        props:['value','label'],
-        methods:{
-            chooseOption(value){
-                this.$emit('chooseSlecetValue', value)                      
-            }
-        }
+export default {
+  name: "elOption",
+  props: ["value", "label"],
+  methods: {
+    chooseOption(value) {
+      this.$parent.selectValue=value
+      //this.$emit("chooseSlecetValue", value);
     }
+  }
+};
 </script>
 
 <style scoped>
-
+ li {
+  padding:10px 12px;
+}
+ li:hover,
+ li:focus {
+  background-color: #f5f7fa;
+}
 </style>
