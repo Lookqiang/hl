@@ -1,8 +1,16 @@
 <template>
-    <div class="el-input-gruop">
+    <div class="el-input-gruop" :class="{elSelectFocus:focusStatus}">
         <label v-if="label">{{label}}</label>
-        <input class="el-input" :class="classStyle" :type="type"  :value="value" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows">   
-       
+        <input class="el-input" :class="classStyle" 
+        :type="type"
+        :placeholder="placeholder" 
+        :rows="rows"  
+        :readonly='readonly' 
+        :value="value"
+        @blur="blurInput()" 
+        @click="focusInput($event)"   
+        @input="inputValue($event)" >
+         
     </div>
 </template>
 
@@ -19,7 +27,6 @@
                 default:'',
             },
             value:{
-                type:String,
                 default:'',
             },
             rows:{
@@ -37,13 +44,30 @@
             messageError:{
                 type:String,
                 default:''
+            },
+            readonly:{
+                type:Boolean,
+                default:false,
+            },
+        },
+        data(){
+            return {
+                focusStatus:false
             }
         },
         methods:{
             inputValue($event){
                this.$emit('input', $event.target.value)
             },
-           
+            focusInput(){
+               this.$emit('focussinput', true)
+               if(this.readonly!=''){
+                    this.focusStatus = true;
+               }
+            },
+            blurInput(){
+                this.focusStatus = false;
+            }
         }
     }
 </script>
@@ -57,6 +81,8 @@
     border: 0;
     background: rgba(203, 203, 203, 0);
     font-size: 14px;
+    height: 40px;
+    line-height: 40px;
 }
 
 .el-input-bottom input{
@@ -80,5 +106,7 @@ input::-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
 input::-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
     color:#cbcbcb;
 }
-
+.elSelectFocus {
+  outline: 1px solid #409eff;
+}
 </style>

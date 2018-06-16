@@ -1,6 +1,6 @@
 <template>
 
-   <li :value=value @click="chooseOption(label)">{{label}}</li>
+   <li :value=value @click="chooseOption(value,label)">{{label}}</li>
 </template>
 
 <script>
@@ -8,8 +8,9 @@ export default {
   name: "elOption",
   props: ["value", "label"],
   methods: {
-    chooseOption(value) {
-      this.$parent.selectValue=value
+    chooseOption(id,value) {
+      this.$parent.selectValue=value;
+      this.$parent.selectValueId=id
       //this.$emit("chooseSlecetValue", value);
     }
   }

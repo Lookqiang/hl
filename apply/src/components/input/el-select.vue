@@ -2,11 +2,25 @@
     <div class="el-select" :class="{elSelectFocus:focusStatus}">
         <label v-if="label">{{label}} </label>
          
-        <input class="el-input" @click="focusInput($event)"    @blur="blurInput()"  :dataId="dataId" :class="classStyle" :type="type"  v-model="selectValue" v-on:input="inputValue($event)" :placeholder="placeholder" :rows="rows" autocomplete="off" readonly="readonly">   
-        <span class="triangle">
+        <input class="el-input" 
+                @click="focusInput($event)"    
+                @blur="blurInput()"   
+                :class="classStyle" 
+                :type="type"  
+                v-bind:value="selectValue"
+                :placeholder="placeholder" 
+                :rows="rows" 
+                autocomplete="off" 
+                readonly="readonly">   
+        
+       
+        <span class="triangle triangle-up" :class="{rotateTO:showDropdown,rotateFrom:!showDropdown}" >
             <i></i>
         </span>
-        <transition name="fade">
+           
+       
+            
+        <transition name="bounce">
             <div class="el-select-dropdown" :style="{top:dropdownTop}" v-if="showDropdown">
                 <ul class="el-select-option">
                     <slot></slot>
@@ -21,82 +35,80 @@
 import elOption from "@/components/input/el-option.vue";
 import store from "../../store";
 
-    export default {
-        name:'el-select',
-        props:{
-            type:{
-                type:String,
-                default:null,
-            },
-            placeholder:{
-                type:String,
-                default:'',
-            },
-            rows:{
-                type:String,
-                default:'',
-            },
-            label:{
-                type:String,
-                default:''    
-            },
-            classStyle:{
-                type:String,
-                default:''
-            },
-            messageError:{
-                type:String,
-                default:''
-            },
-            optionList:{
-                type:Array,
-                default:null
-            }
-        },
-        data(){
-            return {
-                showDropdown:false,
-                dropdownTop:0,
-                focusStatus:false,
-                dataId:'',
-                selectValue:''
-            }
-        },
-        creatd(){
-           
-        },
-        mount(){
-            
-        },
-        methods:{
-            inputValue($event){
-               this.$emit('input', $event.target.value)
-            },
-            focusInput($event){
-                console.log(this)
-                this.showDropdown=!this.showDropdown;
-                this.dropdownTop =$event.target.offsetTop+$event.target.offsetHeight+10;
-                this.focusStatus=true
-            },
-            blurInput(){
-                this.showDropdown=false;
-                this.focusStatus=false
-            },
-            chooseResult(currentOption){
-                this.value=currentOption.name
-                this.$emit('input',currentOption.id)
-            },
-             getOptionValue(value){
-                console.log(value)
-            }
-        },
-        components: {
-            elOption
-        },
-        computed:{
-        
-        },
-    
+export default {
+  name: "el-select",
+  props: {
+    type: {
+      type: String,
+      default: null
+    },
+    placeholder: {
+      type: String,
+      default: ""
+    },
+    rows: {
+      type: String,
+      default: ""
+    },
+    label: {
+      type: String,
+      default: ""
+    },
+    classStyle: {
+      type: String,
+      default: ""
+    },
+    messageError: {
+      type: String,
+      default: ""
+    },
+    optionList: {
+      type: Array,
+      default: null
+    },
+    value: {
+      type: String,
+      default: ""
+    }
+  },
+  data() {
+    return {
+      showDropdown: false,
+      dropdownTop: 0,
+      focusStatus: false,
+      selectValueId: "",
+      selectValue: "",
+      showAnimated: false
+    };
+  },
+  creatd() {},
+  mount() {},
+  methods: {
+    inputValue($event) {
+      this.$emit("input", this.selectValueId);
+    },
+    focusInput($event) {
+      this.showDropdown = !this.showDropdown;
+      this.dropdownTop = $event.target.offsetHeight + 10;
+      this.focusStatus = true;
+      this.showAnimated = !this.showAnimated;
+    },
+    blurInput() {
+      this.showDropdown = false;
+      this.focusStatus = false;
+      this.showAnimated = false;
+    }
+  },
+
+  components: {
+    elOption
+  },
+  computed: {},
+  watch: {
+    selectValue() {
+      this.inputValue();
+    }
+  }
 };
 </script>
 
@@ -133,13 +145,16 @@ input::-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #cbcbcb;
 }
-.triangle{
-    width: 30px;
-    height: 40px;
-    line-height: 40px;
+.triangle {
+  width: 30px;
+  height: 40px;
+  line-height: 40px;
 }
-.triangle i:after{
-    content: '\25B2'
+.triangle-up i:after {
+  content: "\25B2";
+}
+.triangle-down i:after {
+  content: "\25BC";
 }
 .el-select-dropdown {
   position: absolute;
@@ -167,10 +182,46 @@ input::-ms-input-placeholder {
 }
 /* 可以设置不同的进入和离开动画 */
 /* 设置持续时间和动画函数 */
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.rotateTO {
+  animation: rotateTo  0.5s  forwards ;
+}
+.rotateFrom{
+   animation: rotateFrom  0.5s  forwards ;
+}
+@keyframes rotateTo {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(180deg);
+  }
+}
+@keyframes rotateFrom{
+  0% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
 }
 </style>
