@@ -1,16 +1,17 @@
 <template>
-    <div class="el-input-gruop" :class="{elSelectFocus:focusStatus}">
+    <div class="el-input-gruop" :class="{elSelectFocus:focusStatus,errorMessage:hasErrorShow}">
         <label v-if="label">{{label}}</label>
-        <input class="el-input" :class="classStyle" 
+        <input class="el-input" :class="{classStyle}" 
         :type="type"
         :placeholder="placeholder" 
         :rows="rows"  
         :readonly='readonly' 
         :value="value"
-        @blur="blurInput()" 
+        :required="required"
+        @blur="blurInput" 
         @click="focusInput($event)"   
         @input="inputValue($event)" >
-         
+        
     </div>
 </template>
 
@@ -49,10 +50,19 @@
                 type:Boolean,
                 default:false,
             },
+            required:{
+                type:Boolean,
+                default:false,
+            },
+            hasError:{
+                type:String,
+                default:'',
+            }
         },
         data(){
             return {
-                focusStatus:false
+                focusStatus:false,
+                fristClick:true
             }
         },
         methods:{
@@ -61,12 +71,19 @@
             },
             focusInput(){
                this.$emit('focussinput', true)
+               
                if(this.readonly!=''){
                     this.focusStatus = true;
                }
             },
             blurInput(){
+                this.fristClick=false
                 this.focusStatus = false;
+            }
+        },
+        computed:{
+            hasErrorShow(){
+                return this.required?this.fristClick?false:this.value==''?true:false :false;
             }
         }
     }
@@ -108,5 +125,9 @@ input::-ms-input-placeholder{  /* Internet Explorer 10-11 */
 }
 .elSelectFocus {
   outline: 1px solid #409eff;
+}
+.errorMessage{
+  outline: 1px solid red;
+
 }
 </style>

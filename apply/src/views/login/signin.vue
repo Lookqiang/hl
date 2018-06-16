@@ -1,21 +1,21 @@
 <template>
     <div>
-        <el-input label='账号' class='el-input-apply'   v-model.trim="formData.account" ></el-input>
-        <el-input label='学生姓名' class='el-input-apply'   v-model.trim="formData.student_name" ></el-input>
-        <el-input label='密码' class='el-input-apply'   v-model="formData.password" ></el-input> 
-        <el-input label='身高' class='el-input-apply'  type='number'  v-model.trim="formData.height" ></el-input> 
-        <el-input label='家庭住址' class='el-input-apply'  type='number'  v-model.trim="formData.family_address" >
+        <el-input label='账号' class='el-input-apply'   v-model.trim="formData.account" required></el-input>
+        <el-input label='学生姓名' class='el-input-apply'   v-model.trim="formData.student_name" required></el-input>
+        <el-input label='密码' class='el-input-apply'   v-model="formData.password" required></el-input> 
+        <el-input label='身高' class='el-input-apply'  type='number'  v-model.trim="formData.height" required></el-input> 
+        <el-input label='家庭住址' class='el-input-apply'  type='number'  v-model.trim="formData.family_address" required>
         </el-input>
-        <el-select label='地区' class='el-input-apply'  v-model="city_id">
+        <el-select label='地区' class='el-input-apply'  v-model="city_id" >
             <el-option v-for='(city,index) in cityList' :key="index" :value='city.city_id' :label='city.city_name' ></el-option>
         </el-select>
 
-        <el-select label='学校' class='el-input-apply'  v-model="formData.school_id" >
+        <el-select label='学校' class='el-input-apply'  v-model="formData.school_id" required>
             <el-option v-for='(school,index) in school_list' :key="index" :value='school.school_id' :label='school.school_name' ></el-option>
         </el-select>
-        <el-input label='生日' class='el-input-apply' :readonly='true'  v-model.trim="formData.birthday" @focussinput="demo2Click"></el-input>
-        <el-input label='年龄' class='el-input-apply'  type='number'  v-model.trim="formData.age" ></el-input>
-        <el-button type="button" class="button-position" text="注册" @click.native="singInUser"></el-button>
+        <el-input label='生日' class='el-input-apply' :readonly='true'  v-model.trim="formData.birthday" @focussinput="demo2Click" required></el-input>
+        <el-input label='年龄' class='el-input-apply'  type='number'  v-model.trim="formData.age" required ></el-input>
+        <el-button type="button" class="button-position" text="注册" @click.native="singInUser" required></el-button>
         <van-popup v-model="calendarShow" position="bottom">
           <van-datetime-picker
             v-model="currentDate"
@@ -72,7 +72,8 @@ export default {
         minDate: new Date(1999,12,1),
       },
       currentDate:'',
-      calendarShow:false
+      calendarShow:false,
+      hasErrorMsgl:true
     };
   },
   created() {
@@ -91,9 +92,11 @@ export default {
     singInUser(){
       
       let that=this;
-      // for(this.formData of keys) {
-      //  console.log(keys)
-      // }
+      console.log(this.formData)
+    
+      Object.entries(this.$children).map((item)=>{
+            item[1].fristClick=false
+      })
       axios.post('applyapi/index/addStudentData', this.formData)
       .then(function (response) {
           console.log(response.data.data);

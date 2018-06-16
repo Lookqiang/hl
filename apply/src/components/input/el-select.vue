@@ -1,5 +1,5 @@
 <template>
-    <div class="el-select" :class="{elSelectFocus:focusStatus}">
+    <div class="el-select" :class="{elSelectFocus:focusStatus,errorMessage:Showerror}">
         <label v-if="label">{{label}} </label>
          
         <input class="el-input" 
@@ -10,11 +10,12 @@
                 v-bind:value="selectValue"
                 :placeholder="placeholder" 
                 :rows="rows" 
+                :required="required"
                 autocomplete="off" 
                 readonly="readonly">   
         
        
-        <span class="triangle triangle-up" :class="{rotateTO:showDropdown,rotateFrom:!showDropdown}" >
+        <span class="triangle triangle-up" :class="{rotateTO:!fristClicks?showDropdown:false,rotateFrom:!fristClicks?!showDropdown:false}" >
             <i></i>
         </span>
            
@@ -69,7 +70,11 @@ export default {
     value: {
       type: String,
       default: ""
-    }
+    },
+    required:{
+        type:Boolean,
+        default:false,
+    },
   },
   data() {
     return {
@@ -78,7 +83,10 @@ export default {
       focusStatus: false,
       selectValueId: "",
       selectValue: "",
-      showAnimated: false
+      showAnimated: false,
+      fristClick:true,
+      fristClicks:false,
+      hasErrorShow:false
     };
   },
   creatd() {},
@@ -88,12 +96,14 @@ export default {
       this.$emit("input", this.selectValueId);
     },
     focusInput($event) {
-      this.showDropdown = !this.showDropdown;
-      this.dropdownTop = $event.target.offsetHeight + 10;
-      this.focusStatus = true;
-      this.showAnimated = !this.showAnimated;
+        this.showDropdown = !this.showDropdown;
+        this.dropdownTop = $event.target.offsetHeight + 10;
+        this.focusStatus = true;
+        this.showAnimated = !this.showAnimated;
+        this.fristClicks=false
     },
     blurInput() {
+       this.fristClick=false
       this.showDropdown = false;
       this.focusStatus = false;
       this.showAnimated = false;
@@ -103,7 +113,11 @@ export default {
   components: {
     elOption
   },
-  computed: {},
+  computed: {
+    Showerror(){
+        return this.required?this.fristClick?false:this.value==''?true:false :false;
+    }
+  },
   watch: {
     selectValue() {
       this.inputValue();
@@ -223,5 +237,9 @@ input::-ms-input-placeholder {
   100% {
     transform: rotate(0deg);
   }
+}
+.errorMessage{
+  outline: 1px solid red;
+
 }
 </style>
