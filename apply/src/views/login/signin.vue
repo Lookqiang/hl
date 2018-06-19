@@ -38,6 +38,7 @@ import elButton from "@/components/button/el-button.vue";
 import elSelect from "@/components/input/el-select.vue";
 import elOption from "@/components/input/el-option.vue";
 import axios from "axios";
+import {getCityData,addStudentData,getSchoolData} from "@/requst-url.js";
 import { DatetimePicker,Popup } from 'vant';
 Vue.use(Popup);
 Vue.use(DatetimePicker);
@@ -78,7 +79,7 @@ export default {
   },
   created() {
     let that=this;
-    axios.post('applyapi/index/getCityData', {
+    axios.post(getCityData, {
     })
     .then(function (response) {
         console.log(response.data.data);
@@ -92,12 +93,12 @@ export default {
     singInUser(){
       
       let that=this;
-      console.log(this.formData)
+      console.log(getCityData)
     
       Object.entries(this.$children).map((item)=>{
             item[1].fristClick=false
       })
-      axios.post('applyapi/index/addStudentData', this.formData)
+      axios.post(addStudentData, this.formData)
       .then(function (response) {
           console.log(response.data.data);
       })
@@ -117,7 +118,7 @@ export default {
       let that = this;
       if (that.city_id != "") {
         axios
-          .post("applyapi/index/getSchoolData", {
+          .post(getSchoolData, {
             city_id: that.city_id,
             page_num: "1",
             page_size: "1000"

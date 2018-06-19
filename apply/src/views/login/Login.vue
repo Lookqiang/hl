@@ -15,76 +15,76 @@
 </template>
 
 <script>
-import { Component, Vue } from 'vue-property-decorator';
-import elInput from '@/components/input/el-input.vue';
-import elButton from '@/components/button/el-button.vue';
+import { Component, Vue } from "vue-property-decorator";
+import elInput from "@/components/input/el-input.vue";
+import elButton from "@/components/button/el-button.vue";
 
 export default {
-    name:'Login',
-    data(){
-        return {
-            usrName:'',
-            password:'',
-            phone:'',
-            messageError:"chngg",
-            messageErrorActive:''
-        }
-    },
-    methods:{
-        login(){
-            this.messageErrorActive='message-error-active'
-            this.messageError='密码错误'
-        }
-    },
-    components: {
-   elInput,
-   elButton
+  name: "Login",
+  data() {
+    return {
+      usrName: "",
+      password: "",
+      phone: "",
+      messageError: "chngg",
+      messageErrorActive: ""
+    };
   },
-}
+  methods: {
+    login() {
+      this.messageErrorActive = "message-error-active";
+      this.messageError = "密码错误";
+    }
+  },
+  components: {
+    elInput,
+    elButton
+  }
+};
 </script>
 
 <style scoped>
-.bg{
-     position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: -1;
+.bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: -1;
 }
-.logo{
-    width: 34.66%;
-    height: 34.66%;
-    display: block;
-    margin: 54px auto;
+.logo {
+  width: 34.66%;
+  height: 34.66%;
+  display: block;
+  margin: 54px auto;
 }
-.el-input-bottom:first{
-    margin-top:44px;
+.el-input-bottom:first {
+  margin-top: 44px;
 }
- .button-position{
-    margin-top: 48px;
+.button-position {
+  margin-top: 48px;
 }
-.message-error-default{
-    padding: 8px 64px 0;
-    opacity: 0;    
+.message-error-default {
+  padding: 8px 64px 0;
+  opacity: 0;
 }
-.message-error-active{
-    color: red;
-    opacity:1; 
-    text-align: left;
-    padding: 7px 64px 0;
-    font-size: 14px;
+.message-error-active {
+  color: red;
+  opacity: 1;
+  text-align: left;
+  padding: 7px 64px 0;
+  font-size: 14px;
 }
-.flex{
-    display: flex;
-    justify-content: space-around;
+.flex {
+  display: flex;
+  justify-content: space-around;
 }
-.other-handle{
-    margin-top: 10px;
-    font-size: 14px;
+.other-handle {
+  margin-top: 10px;
+  font-size: 14px;
 }
-.other-handle a{
-    text-decoration: none;
-    color:#2090da; 
+.other-handle a {
+  text-decoration: none;
+  color: #2090da;
 }
 </style>
