@@ -6,12 +6,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    slecetValue:'1'
+    token:localStorage.token,
+    account:localStorage.account,
+    student_id:localStorage.student_id
   },
   mutations: {
     chooseSlecetValue (state,payload) {
       // 变更状态
-      state.slecetValue=payload
+      
     }
   },
   actions: {

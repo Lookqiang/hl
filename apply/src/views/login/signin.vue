@@ -93,8 +93,7 @@ export default {
     singInUser(){
       
       let that=this;
-      console.log(getCityData)
-    
+  
       Object.entries(this.$children).map((item)=>{
             item[1].fristClick=false
       })

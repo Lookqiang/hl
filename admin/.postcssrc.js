@@ -1,5 +1,8 @@
 module.exports = {
   plugins: {
-    autoprefixer: {}
+    autoprefixer: {},
+  },
+  devServer: {
+    port: 5999
   }
 }

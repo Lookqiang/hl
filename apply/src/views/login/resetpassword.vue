@@ -1,7 +1,7 @@
 <template>
     <div class='e'>
-         <el-input class='el-input-apply' type="password"></el-input>
-         <el-input class='el-input-apply' type="password"></el-input>
+         <el-input label='旧密码' class='el-input-apply' type="password"></el-input>
+         <el-input label='新密码' class='el-input-apply' type="password"></el-input>
          <el-button class="el-submit" text="提交" ></el-button>
     </div>
 </template>

@@ -15,7 +15,7 @@
                 readonly="readonly">   
         
        
-        <span class="triangle triangle-up" :class="{rotateTO:!fristClicks?showDropdown:false,rotateFrom:!fristClicks?!showDropdown:false}" >
+        <span class="triangle triangle-up" :class="{rotateTO:fristClicks?showDropdown:false,rotateFrom:fristClicks?!showDropdown:false}" >
             <i></i>
         </span>
            
@@ -100,7 +100,7 @@ export default {
         this.dropdownTop = $event.target.offsetHeight + 10;
         this.focusStatus = true;
         this.showAnimated = !this.showAnimated;
-        this.fristClicks=false
+        this.fristClicks=true
     },
     blurInput() {
        this.fristClick=false
