@@ -15,15 +15,15 @@
                     <el-menu
                         class="el-menu-vertical-demo"
                         style="width: 150px;"
-                        :default-active="currentTabIndex[firstcurrentTab]"
+                        :default-active="currentTabIndex[firstcurrentTab]+''"
                         >
-                            <el-menu-item  v-for="(navChildren,index2) in navChildrenList" :key='index2' :index="navChildren.name" @click="openChildrenConnet(navChildren,index2)">
+                            <el-menu-item  v-for="(navChildren,index2) in navChildrenList" :key='index2' :index="index2+''" @click="openChildrenConnet(navChildren,index2)">
                                 <span slot="title">{{navChildren.name}}</span>
                             </el-menu-item>                      
                     </el-menu>
                 </el-aside>
                 <el-main style="padding:0;display: flex;flex-direction: column;">
-                    <el-header> 
+                    <el-header > 
                         <el-tabs type="card" v-model="editableTabsValue2" closable @tab-remove="removeTab" @tab-click="handleClick">
                             <el-tab-pane
                                 :key="tabindex"
@@ -35,9 +35,15 @@
                         </el-tabs>    
                     </el-header>
                     <el-container style="display:flex;justify-content: center">
-                        <keep-alive :include="titleTab">
-                            <component :is="currentTabComponent"></component> 
-                        </keep-alive>
+                        <el-header >
+                            
+                        </el-header>
+                        <el-container>
+                            <keep-alive :include="titleTab[firstcurrentTab]">
+                                <component :is="currentTabComponent"></component> 
+                            </keep-alive>
+                        </el-container>
+                        
                     </el-container>
                 </el-main>
             </el-container>
@@ -67,9 +73,14 @@ export default {
     name: "home",
     methods: {
         handleClick(tab, event){
-            console.log(tab.name);
-            this.currentTabIndex[this.firstcurrentTab]=tab.name;  
-            this.editableTabsValue2=tab.name;        
+            let currentTabIndex='';
+            //切换标签页，二级导航列表相对应的展示
+            this.navChildrenList.map((item,index)=>{
+                if(item.id==tab.name){
+                    this.$set(this.currentTabIndex,this.firstcurrentTab,index) 
+                }
+            })
+            this.currentTab=tab.name;        
         },
         removeTab(targetName){
             let targetNameIndex=this.titleTab[this.firstcurrentTab].findIndex((n)=>n==targetName);
@@ -82,14 +93,22 @@ export default {
             if(targetNameIndex==0&&this.titleTab[this.firstcurrentTab].length>1){
                 this.currentTab=this.titleTab[this.firstcurrentTab][targetNameIndex+1];
                 this.editableTabsValue2=this.currentTab;
-                //this.childrenIndex[this.firstcurrentTab]=this.childrenIndex[this.firstcurrentTab][targetNameIndex+1];
-                this.currentTabIndex[this.firstcurrentTab]=this.childrenIndex[this.firstcurrentTab][targetNameIndex+1]+'';
+                this.navChildrenList.map((item,index)=>{
+                    if(item.id==this.currentTab){
+                        this.$set(this.currentTabIndex,this.firstcurrentTab,index) 
+                    }
+                })
                 
             };
             if(targetNameIndex!=0){
                 this.currentTab=this.titleTab[this.firstcurrentTab][targetNameIndex-1];
                 this.editableTabsValue2=this.currentTab;
-                this.currentTabIndex[this.firstcurrentTab]=this.childrenIndex[this.firstcurrentTab][targetNameIndex-1]+'';
+                //切换标签页，二级导航列表相对应的展示
+                this.navChildrenList.map((item,index)=>{
+                    if(item.id==this.currentTab){
+                        this.$set(this.currentTabIndex,this.firstcurrentTab,index) 
+                    }
+                })
                
             };
             this.titleTab[this.firstcurrentTab].splice(this.titleTab[this.firstcurrentTab].findIndex((n)=>n==targetName),1); 
@@ -98,13 +117,24 @@ export default {
         openChildren(nav,index){
             this.navChildrenList=nav.children;
             this.firstcurrentTab=index;
+            //切换一级导航列表时，二级导航列表的默认展示
+            this.navChildrenList.map((item,index)=>{
+                if(index==this.currentTabIndex[this.firstcurrentTab]){
+                    this.editableTabsValue2=item.id;
+                    this.currentTab=item.name;
+                }
+            })
             
-            this.editableTabsValue2=this.currentTabIndex[this.firstcurrentTab];
         },
         openChildrenConnet(nav,index){
+            //切换二级导航列表时
+
+            //组件的展示（组件名）
             this.currentTab=nav.name
-            this.currentTabIndex[this.firstcurrentTab]=nav.name
-             this.editableTabsValue2=nav.name
+            //保存当前的展示组件的index，以便切换一级导航列表时的默认组件展示
+            this.$set(this.currentTabIndex,this.firstcurrentTab,index)
+            //展示哪一个标签页
+            this.editableTabsValue2=nav.name
             
             if(!this.titleTab[this.firstcurrentTab].includes(nav.name)){
                 this.titleTab[this.firstcurrentTab].push(nav.name);
@@ -153,9 +183,7 @@ export default {
         }
     },
     created(){
-       
         for(let index=0;index<this.navList.length;index++){
-            console.log(index)
             this.$set(this.titleTab,index,[])
             this.$set(this.childrenIndex,index,[])
             this.$set(this.currentTabIndex,index,'')
@@ -173,12 +201,7 @@ export default {
         }
     },
     watch:{
-        editableTabsValue2(val){
-            if(val!=0){
-               this.currentTab= val     
-            }
-           
-        }
+       
     }
 };
 </script>

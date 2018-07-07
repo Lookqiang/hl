@@ -1,6 +1,31 @@
 <template>
     <div >
-        <input type="text" v-model="val">
+        <div style="position: relative;">
+            <label style="width: 150px;
+                    height: 150px;
+                    background: #eee;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;" 
+                for='shangchun' id="dropbox"  @dragenter="drophandle" >
+                    <span class="el-icon-plus" ></span>
+                </label>      
+        <input id='shangchun' type="file" multiple @change="uploadImg('',$event)" style="    
+        border: 1px solid #000;
+        width: 150px;
+        height: 150px;
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;">
+        
+        </div>
+        <div style="display:inline-block;overflow:hidden;width:80px;height:100px;">
+             <img style="width:100%;" v-for="(images,index) in imagesList" :key='index'  :src="images.url" />
+        </div>
+       
+        
         <el-table
         :data="tableData"
         border
@@ -51,20 +76,38 @@
 
 <script>
 import vue from "vue";
-import { Table, TableColumn } from "element-ui";
+import { Table, TableColumn,} from "element-ui";
 
 vue.use(Table);
 vue.use(TableColumn);
 
 export default {
     methods: {
-      handleClick(row) {
-        console.log(row);
-      }
+        uploadImg(imgUrls,e){
+            
+            let imgUrl=imgUrls || e.target.files;
+            let windowURL = window.URL || window.webkitURL;
+            console.log(imgUrl)
+            Array.from(imgUrl).map((item,index)=>{
+                this.imagesList.push({
+                    url:windowURL.createObjectURL(item),
+                    size:item.size
+                })
+            })
+            console.log(windowURL.createObjectURL(imgUrl[0]))
+            
+        },
+        drophandle(e) {
+            var dt = e.dataTransfer;
+            var imgUrl = dt.files;
+        
+            uploadImg(imgUrl)
+        },
     },
     props:['addaa'],
     data() {
       return {
+        imagesList:[],
         tableData: [{
           date: '2016-05-03',
           name: '王小虎',
@@ -94,8 +137,12 @@ export default {
           address: '上海市普陀区金沙江路 1518 弄',
           zip: 200333
         }],
-        val:this.addaa
+        val:this.addaa,
+        fileName:''
       }
+    },
+    created(){
+       
     }
   }
 </script>
